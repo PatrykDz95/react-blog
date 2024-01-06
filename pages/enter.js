@@ -3,15 +3,14 @@ import { UserContext } from '../lib/context';
 
 import { useEffect, useState, useCallback, useContext } from 'react';
 import debounce from 'lodash.debounce';
+import Metatags from "../components/Metatags";
 
-export default function Enter(props) {
+export default function Enter() {
     const { user, username } = useContext(UserContext);
 
-    // 1. user signed out <SignInButton />
-    // 2. user signed in, but missing username <UsernameForm />
-    // 3. user signed in, has username <SignOutButton />
     return (
         <main>
+            <Metatags title="Enter" description="Sign up for this amazing app!" />
             {user ? !username ? <UsernameForm /> : <SignOutButton /> : <SignInButton />}
         </main>
     );
@@ -23,7 +22,7 @@ function SignInButton() {
         try {
         await auth.signInWithPopup(googleAuthProvider);
         } catch (err) {
-            console.error('error occured: ', err.message)
+            console.error('error occurred while google sign in: ', err.message)
         }
     };
 
@@ -80,8 +79,6 @@ function UsernameForm() {
             setIsValid(false);
         }
     };
-
-    //
 
     useEffect(() => {
         checkUsername(formValue);
